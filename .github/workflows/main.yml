@@ -14,14 +14,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
-    services:
-      mydb:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: password
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 1.8
@@ -39,8 +31,8 @@ jobs:
     - name: Verify MySQL connection from host
       run: |
         sudo systemctl start mysql
-        mysql -uroot -ppassword -e "SHOW DATABASES"
-        mysql -uroot -ppassword -e "CREATE DATABASE eportfolio"
-        mysql -uroot -ppassword -e "SHOW DATABASES"
+        mysql -uroot -proot -e "SHOW DATABASES"
+        mysql -uroot -proot -e "CREATE DATABASE eportfolio"
+        mysql -uroot -proot -e "SHOW DATABASES"
     - name: Build with Maven
       run: mvn -B package --file /home/runner/work/ci/ci/demo/pom.xml
