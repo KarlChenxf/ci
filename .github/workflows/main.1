@@ -14,7 +14,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+
     services:
       mydb:
         image: mysql:5.7
@@ -38,7 +38,6 @@ jobs:
       run: pwd
     - name: Verify MySQL connection from host
       run: |
-        sudo systemctl start mysql
         mysql -uroot -ppassword -e "SHOW DATABASES"
         mysql -uroot -ppassword -e "CREATE DATABASE eportfolio"
         mysql -uroot -ppassword -e "SHOW DATABASES"
