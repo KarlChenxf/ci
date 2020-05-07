@@ -16,14 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mysql:
-          image: mysql:5.7
-          env:
-              MYSQL_ALLOW_EMPTY_PASSWORD: yes
-              MYSQL_DATABASE: laravel_tags
-          ports:
-              - 3306
-          options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mydb:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
 
     steps:
     - uses: actions/checkout@v2
@@ -41,9 +38,8 @@ jobs:
       run: pwd
     - name: Verify MySQL connection from host
       run: |
-        sudo apt-get install -y mysql-client
-        mysql --host 127.0.0.1 --port 3306 -uroot -ppassword -e "SHOW DATABASES"
-        mysql --host 127.0.0.1 --port 3306 -uroot -ppassword -e "CREATE DATABASE eportfolio"
-        mysql --host 127.0.0.1 --port 3306 -uroot -ppassword -e "SHOW DATABASES"
+        mysql -uroot -ppassword -e "SHOW DATABASES"
+        mysql -uroot -ppassword -e "CREATE DATABASE eportfolio"
+        mysql -uroot -ppassword -e "SHOW DATABASES"
     - name: Build with Maven
       run: mvn -B package --file /home/runner/work/ci/ci/demo/pom.xml
